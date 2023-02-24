@@ -1,44 +1,50 @@
 {
-  "name": "@arnavk-09/discord-backups",
-  "version": "1.0.0",
-  "description": "Create backups of your discord server",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ArnavK-09/discord-backups.git"
-  },
-  "bugs": "https://github.com/ArnavK-09/discord-backups/issues",
-  "author": {
-    "name": "ArnavK-09",
-    "email": "arnavkaushal09@gmail.com"
-  },
-  "keywords": [
-    "typescript",
-    "discord",
-    "backup",
-    "discord backup",
-    "guildschema",
-    "discord bot"
-  ],
-  "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/**/*",
-    "LICENSE",
-    "README.md"
-  ],
-  "scripts": {
-    "coverage": "vitest run --coverage",
-    "dev": "npm run build --watch",
-    "build": "rimraf dist && tsup",
-    "build:prod": "cross-env NODE_ENV=production npm run build",
-    "typecheck": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "discord.js": "^14.7.1",
-    "rimraf": "^4.1.2",
-    "tsup": "^6.6.3"
-  }
+    "name": "@arnavk-09/discord-backups",
+    "version": "1.0.0",
+    "description": "Create backups of your discord server",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ArnavK-09/discord-backups.git"
+    },
+    "bugs": "https://github.com/ArnavK-09/discord-backups/issues",
+    "author": {
+        "name": "ArnavK-09",
+        "email": "arnavkaushal09@gmail.com"
+    },
+    "keywords": [
+        "typescript",
+        "discord",
+        "backup",
+        "discord backup",
+        "guildschema",
+        "discord bot"
+    ],
+    "license": "MIT",
+    "main": "dist/index.js",
+    "module": "dist/index.mjs",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist/**/*",
+        "LICENSE",
+        "README.md"
+    ],
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "scripts": {
+        "coverage": "vitest run --coverage",
+        "dev": "npm run build --watch",
+        "build": "rimraf dist && tsup",
+        "build:prod": "cross-env NODE_ENV=production npm run build",
+        "typecheck": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "discord.js": "^14.7.1",
+        "rimraf": "^4.1.2",
+        "tsup": "^6.6.3"
+    },
+    "dependencies": {
+        "typescript": "^4.9.5"
+    }
 }
