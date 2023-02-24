@@ -3,6 +3,6 @@
  * @description Type Interface for Guild Emoji Data
  */
 export interface EmojiData {
-    name: string;
-    url?: string;
+  name: string;
+  url: string;
 }

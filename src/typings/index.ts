@@ -1,7 +1,7 @@
-// exports 
+// exports
 export * from "./BanForm";
 export * from "./RoleData";
-export * from "./EmojiData"; 
+export * from "./EmojiData";
 export * from "./ChannelData";
 export * from "./ChannelPermissions";
 export * from "./BaseData";

@@ -1,8 +1,8 @@
 // imports
 import {
-    TextBasedChannelTypes,
-    ThreadChannelType,
-    VoiceBasedChannelTypes,
+  TextBasedChannelTypes,
+  ThreadChannelType,
+  VoiceBasedChannelTypes,
 } from "discord.js";
 import { ChannelPermissions } from ".";
 
@@ -11,8 +11,8 @@ import { ChannelPermissions } from ".";
  * @description Type Interface for Base Data Of Any Channel of Guild
  */
 export interface BaseChannelData {
-    name: string;
-    parent?: string | null;
-    type: TextBasedChannelTypes | VoiceBasedChannelTypes | ThreadChannelType;
-    permissions?: ChannelPermissions[];
+  name: string;
+  parent?: string | null;
+  type: TextBasedChannelTypes | VoiceBasedChannelTypes | ThreadChannelType;
+  permissions?: ChannelPermissions[];
 }

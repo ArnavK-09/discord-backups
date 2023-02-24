@@ -7,11 +7,11 @@ import { Message } from ".";
  * @description Type Interface for Guild Thread Channel
  */
 export interface ThreadChannelData {
-    archived: boolean;
-    type: ThreadChannelType;
-    rateLimitPerUser: number | null;
-    autoArchiveDuration: ThreadAutoArchiveDuration | null;
-    locked: boolean;
-    messages: Message[];
-    name: string;
+  archived: boolean;
+  type: ThreadChannelType;
+  rateLimitPerUser: number | null;
+  autoArchiveDuration: ThreadAutoArchiveDuration;
+  locked: boolean;
+  messages: Message[];
+  name: string;
 }

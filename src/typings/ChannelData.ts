@@ -6,6 +6,6 @@ import { CategoryData, VoiceChannelData, TextChannelData } from ".";
  * @description Type Interface for Channels & Categories Present In Guild
  */
 export interface ChannelData {
-    categories: CategoryData[];
-    others: Array<TextChannelData | VoiceChannelData>;
+  categories: CategoryData[];
+  others: Array<TextChannelData | VoiceChannelData>;
 }

@@ -6,6 +6,6 @@ import type { Snowflake } from "discord.js";
  * @description Type Interface for Banned Member of a guild
  */
 export interface BanForm {
-    id: Snowflake;
-    reason?: string | null | undefined;
+  id: Snowflake;
+  reason?: string;
 }

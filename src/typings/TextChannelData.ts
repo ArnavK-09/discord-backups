@@ -7,11 +7,11 @@ import { BaseChannelData, ThreadChannelData, Message } from ".";
  * @extends {BaseChannelData}
  */
 export interface TextChannelData extends BaseChannelData {
-    parent?: string;
-    topic: string | null;
-    rateLimitPerUser?: number;
-    nsfw?: boolean;
-    threads: ThreadChannelData[];
-    messages: Message[];
-    news: boolean;
+  parent?: string;
+  topic: string;
+  rateLimitPerUser?: number;
+  nsfw?: boolean;
+  threads: ThreadChannelData[];
+  messages: Message[];
+  news: boolean;
 }

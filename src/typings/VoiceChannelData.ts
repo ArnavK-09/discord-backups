@@ -7,6 +7,6 @@ import { BaseChannelData } from ".";
  * @extends {BaseChannelData}
  */
 export interface VoiceChannelData extends BaseChannelData {
-    usersLimit: number;
-    bitrate: number;
+  usersLimit: number;
+  bitrate: number;
 }

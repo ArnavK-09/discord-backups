@@ -6,7 +6,7 @@ import { ChannelPermissions, TextChannelData, VoiceChannelData } from ".";
  * @description Type Interface for Guild Category
  */
 export interface CategoryData {
-    name: string;
-    permissions: ChannelPermissions[];
-    childeren: Array<TextChannelData | VoiceChannelData>;
+  name: string;
+  permissions: ChannelPermissions[];
+  childeren: Array<TextChannelData | VoiceChannelData>;
 }

@@ -1,9 +1,14 @@
-name: Publish NPM Package
+name: Typecheck
 
 on:
-  release:
-    types:
-      - published
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
   publish:
@@ -20,10 +25,5 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build:prod
-
-      - name: Publish
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
+      - name: Check
+        run: npm run typecheck

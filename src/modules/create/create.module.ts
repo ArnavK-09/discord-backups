@@ -3,10 +3,13 @@ import { Guild, IntentsBitField, SnowflakeUtil } from "discord.js";
 import type { BackupData } from "~/typings";
 import * as createHelpers from "./helpers";
 
-// custom types
+/**
+ * Create Backup Options
+ * @description Type Interface for Config Options for createBackup Function
+ */
 type createBackupOptions = {
-    customID?: string;
-    exclude?: string[];
+  customID?: string;
+  exclude?: string[];
 };
 
 /**
@@ -19,75 +22,73 @@ type createBackupOptions = {
  * @returns {Promise<BackupData>}
  */
 export function createBackup(guild: Guild, options: createBackupOptions = {}) {
-    // promise
-    return new Promise<BackupData>(async (resolve, reject) => {
-        // intents check
-        let intents = new IntentsBitField(guild.client.options.intents);
-        if (!intents.has(IntentsBitField.Flags.Guilds)) {
-            return reject(new Error("Intents not set to GUILDS"));
-        }
+  // promise
+  return new Promise<BackupData>(async (resolve, reject) => {
+    // intents check
+    let intents = new IntentsBitField(guild.client.options.intents);
+    if (!intents.has(IntentsBitField.Flags.Guilds)) {
+      return reject(new Error("Intents not set to GUILDS"));
+    }
 
-        // creating backup
-        try {
-            /* base data */
-            let backup: BackupData = {
-                name: guild.name,
-                verificationLevel: guild.verificationLevel,
-                explictContentFilter: guild.explicitContentFilter,
-                defaultMessageNotifications: guild.defaultMessageNotifications,
-                afk: guild.afkChannel
-                    ? { name: guild.afkChannel.name, timeout: guild.afkTimeout }
-                    : undefined,
-                widget: {
-                    enabled: guild.widgetEnabled,
-                    channel: guild.widgetChannel
-                        ? guild.widgetChannel.name
-                        : null,
-                },
-                channels: { categories: [], others: [] },
-                roles: [],
-                bans: [],
-                emojis: [],
-                createdTimestamp: Date.now(),
-                guildID: guild.id,
-                id: options.customID ?? SnowflakeUtil.generate().toString(),
-            };
+    // creating backup
+    try {
+      /* base data */
+      let backup: BackupData = {
+        name: guild.name,
+        verificationLevel: guild.verificationLevel,
+        explictContentFilter: guild.explicitContentFilter,
+        defaultMessageNotifications: guild.defaultMessageNotifications,
+        afk: guild.afkChannel
+          ? { name: guild.afkChannel.name, timeout: guild.afkTimeout }
+          : undefined,
+        widget: {
+          enabled: guild.widgetEnabled ?? false,
+          channel: guild.widgetChannel ? guild.widgetChannel.name : undefined,
+        },
+        channels: { categories: [], others: [] },
+        roles: [],
+        bans: [],
+        emojis: [],
+        createdTimestamp: Date.now(),
+        guildID: guild.id,
+        id: options.customID ?? SnowflakeUtil.generate().toString(),
+      };
 
-            /* Creating Backup from helpers */
+      /* Creating Backup from helpers */
 
-            // icon
-            backup.iconURL = guild.iconURL() ?? undefined; //testing
+      // icon
+      backup.iconURL = guild.iconURL() ?? undefined; //testing
 
-            // splash url
-            if (guild.splashURL()) backup.splashURL = guild.splashURL()!;
+      // splash url
+      if (guild.splashURL()) backup.splashURL = guild.splashURL()!;
 
-            // banner url
-            if (guild.bannerURL()) backup.bannerURL = guild.bannerURL()!;
+      // banner url
+      if (guild.bannerURL()) backup.bannerURL = guild.bannerURL()!;
 
-            // bans
-            if (!options || !(options.exclude || []).includes("bans")) {
-                backup.bans = await createHelpers.getBans(guild);
-            }
+      // bans
+      if (!options || !(options.exclude || []).includes("bans")) {
+        backup.bans = await createHelpers.getBans(guild);
+      }
 
-            // roles
-            if (!options || !(options.exclude || []).includes("roles")) {
-                backup.roles = await createHelpers.getRoles(guild);
-            }
+      // roles
+      if (!options || !(options.exclude || []).includes("roles")) {
+        backup.roles = await createHelpers.getRoles(guild);
+      }
 
-            // channels
-            if (!options || !(options.exclude || []).includes("channels")) {
-                backup.channels = await createHelpers.getChannels(guild);
-            }
+      // channels
+      if (!options || !(options.exclude || []).includes("channels")) {
+        backup.channels = await createHelpers.getChannels(guild);
+      }
 
-            // emojis
-            if (!options || !(options.exclude || []).includes("emojis")) {
-                backup.emojis = await createHelpers.getEmojis(guild);
-            }
+      // emojis
+      if (!options || !(options.exclude || []).includes("emojis")) {
+        backup.emojis = await createHelpers.getEmojis(guild);
+      }
 
-            /* return */
-            resolve(backup);
-        } catch (err) {
-            return reject(err);
-        }
-    });
+      /* return */
+      resolve(backup);
+    } catch (err) {
+      return reject(err);
+    }
+  });
 }
