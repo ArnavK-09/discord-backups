@@ -47,6 +47,9 @@
   "dependencies": {
     "typescript": "^4.9.5"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "release-it": {
     "github": {
       "release": true
