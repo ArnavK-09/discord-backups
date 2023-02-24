@@ -1,6 +1,7 @@
 {
   "name": "@arnavk-09/discord-backups",
   "version": "1.0.0",
+  "private": false,
   "description": "Create backups of your discord server",
   "repository": {
     "type": "git",
