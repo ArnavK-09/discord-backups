@@ -1,5 +1,5 @@
 // imports
-import { Guild, IntentsBitField, SnowflakeUtil } from "discord.js";
+import { Guild, SnowflakeUtil } from "discord.js";
 import type { BackupData } from "~/typings";
 import * as createHelpers from "./helpers";
 
@@ -24,12 +24,6 @@ type createBackupOptions = {
 export function createBackup(guild: Guild, options: createBackupOptions = {}) {
   // promise
   return new Promise<BackupData>(async (resolve, reject) => {
-    // intents check
-    let intents = new IntentsBitField(guild.client.options.intents);
-    if (!intents.has(IntentsBitField.Flags.Guilds)) {
-      return reject(new Error("Intents not set to GUILDS"));
-    }
-
     // creating backup
     try {
       /* base data */

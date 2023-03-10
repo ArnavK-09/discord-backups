@@ -35,7 +35,7 @@ export function loadBackup(
     // loading backup
     try {
       // clear guild
-      if (options.flushGuild) await flushGuildData(guild);
+      if (options.flushGuild) flushGuildData(guild);
 
       // loading all data
       Promise.all([

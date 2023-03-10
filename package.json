@@ -17,8 +17,7 @@
     "discord",
     "backup",
     "discord backup",
-    "guildschema",
-    "discord bot"
+    "guildschema"
   ],
   "license": "MIT",
   "main": "dist/index.js",
@@ -30,15 +29,13 @@
     "README.md"
   ],
   "scripts": {
-    "coverage": "vitest run --coverage",
     "dev": "npm run build --watch",
     "build": "rimraf dist && tsup",
-    "build:prod": "cross-env NODE_ENV=production npm run build",
+    "build:prod": "npm run build",
     "typecheck": "tsc --noEmit",
     "release": "release-it"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "discord.js": "^14.7.1",
     "release-it": "^15.6.0",
     "rimraf": "^4.1.2",
