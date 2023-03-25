@@ -78,3 +78,7 @@ jspm_packages/
 # prod
 test
 dist/
+
+# repl
+.replit
+replit.nix

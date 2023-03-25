@@ -7,8 +7,21 @@ import {
   Role,
   VoiceChannel,
 } from "discord.js";
+import type {
+  GuildExplicitContentFilter,
+  GuildVerificationLevel,
+} from "discord.js";
 import type { BackupData } from "~/typings";
 import { loadCategory, loadChannel } from "~/utils";
+
+interface ServerConfig {
+  name?: string;
+  iconURL?: string;
+  splashURL?: string;
+  bannerURL?: string;
+  verificationLevel?: GuildVerificationLevel;
+  explictContentFilter?: GuildExplicitContentFilter;
+}
 
 /**
  * Load Bans
@@ -167,37 +180,25 @@ export function loadWidget(guild: Guild, backup: BackupData): Promise<Guild[]> {
  * @param {BackupData} backup - Backup data
  * @returns {Promise<unknown[]>} unkown
  */
-export function loadChannels(
-  guild: Guild,
-  backup: BackupData
-): Promise<unknown[]> {
-  // promises list
-  let channelPromises: Promise<void | unknown>[] = [];
+export async function loadChannels(guild: Guild, backup: BackupData): Promise<unknown> {
+  const channelPromises: Promise<unknown>[] = [];
 
-  // categories
-  backup.channels.categories.forEach((c) => {
-    channelPromises.push(
-      new Promise<void | unknown>((resolve) => {
-        // create category
-        loadCategory(c, guild).then((newCategory) => {
-          c.childeren.forEach((channelData) => {
-            loadChannel(channelData, guild, newCategory);
-            resolve(true);
-          });
-        });
-      })
-    );
-  });
-
-  // other channels
-  backup.channels.others.forEach((channel) => {
-    // push
+  // Load category channels
+  for (const category of backup.channels.categories) {
+    const newCategory = await loadCategory(category, guild);
+    for (const channelData of category.children) {
+      channelPromises.push(loadChannel(channelData, guild, newCategory));
+    }
+  }
+  // Load other channels
+  for (const channel of backup.channels.others) {
     channelPromises.push(loadChannel(channel, guild));
-  });
-
-  // loading promises
-  return Promise.all(channelPromises);
+  }
+  // Wait for all promises to resolve
+ return Promise.all(channelPromises);
 }
+
+
 
 /**
  * Load Server Config
@@ -208,6 +209,48 @@ export function loadChannels(
  * @param {BackupData} backup - Backup data
  * @returns {Promise<Guild[]>} guildinfo
  */
+export async function loadServerConfig(
+  guild: Guild,
+  backup: BackupData
+): Promise<void> {
+  const config: ServerConfig = {
+    name: backup.name,
+    iconURL: backup.iconURL,
+    splashURL: backup.splashURL,
+    bannerURL: backup.bannerURL,
+    verificationLevel: backup.verificationLevel,
+    explictContentFilter: backup.explictContentFilter,
+  };
+
+  const configProps = [
+    { prop: 'name', method: 'setName' },
+    { prop: 'iconURL', method: 'setIcon' },
+    { prop: 'splashURL', method: 'setSplash' },
+    { prop: 'bannerURL', method: 'setBanner' },
+    { prop: 'verificationLevel', method: 'setVerificationLevel' },
+    { prop: 'explicitContentFilter', method: 'setExplicitContentFilter' },
+  ];
+
+  const serverConfigPromises = configProps
+    // @ts-ignore
+    .filter(({ prop }) => config[prop] !== undefined)
+    .map(({ prop, method }) => {
+      if (prop === 'explicitContentFilter' && !guild.features.includes(GuildFeature.Community)) {
+        return Promise.resolve();
+      }
+      // @ts-ignore
+      return guild[method](config[prop]!, 'Loading Backup Config');
+    });
+
+  await Promise.allSettled(serverConfigPromises);
+  //return results.filter(({ status }) => status === 'fulfilled').map(({ value }) => value as Guild);
+}
+
+
+
+
+
+/*
 export function loadServerConfig(
   guild: Guild,
   backup: BackupData
@@ -215,8 +258,7 @@ export function loadServerConfig(
   // promises list
   let serverconfigPromises: Promise<Guild>[] = [];
 
-  /* loading config */
-
+  // loading config 
   // name
   if (backup.name) {
     // push
@@ -267,3 +309,4 @@ export function loadServerConfig(
   // loading promises
   return Promise.all(serverconfigPromises);
 }
+*/ 

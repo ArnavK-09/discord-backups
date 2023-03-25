@@ -8,51 +8,71 @@ import * as loadHelpers from "./helpers";
  * Load Backup Options
  * @description Type Interface for Config Options for loadBackup Function
  */
-type loadBackupOptions = {
-  flushGuild: boolean;
-};
+interface LoadBackupOptions {
+  flushGuild?: boolean;
+}
 
 /**
- * Create Backup
+ * Load Backup
+ * @description Loads a backup of a Discord server
  *
- * @description Creates backup of discord server
- *
- * @param {Guild} guild - Guild in which to backup
- * @param {BackupData} backupData - Backup data
- * @param {loadBackupOptions} options - Options to load backup
- * @returns {Promise<BackupData>} Backup Data
+ * @param {Guild} guild - The guild to load the backup into
+ * @param {BackupData} backup - The backup data to load
+ * @param {LoadBackupOptions} [options={ flushGuild: true }] - The options for loading the backup
+ * @returns {Promise<BackupData>} - The loaded backup data
  */
-export function loadBackup(
+export async function loadBackup(
   guild: Guild,
   backup: BackupData,
-  options: loadBackupOptions = { flushGuild: true }
-) {
-  // promise
-  return new Promise<BackupData>(async (resolve, reject) => {
-    // if guild there
-    if (!guild) reject("Guild not found");
+  { flushGuild = true }: LoadBackupOptions = {}
+): Promise<BackupData> {
+  // if guild | backup not there
+  if (!guild) throw new Error("Guild not found");
+  if (!backup || typeof backup === "undefined") throw new Error("Backup Data Not Provided");
 
-    // loading backup
-    try {
-      // clear guild
-      if (options.flushGuild) flushGuildData(guild);
+  //console.log("Loading backup:", backup);
 
-      // loading all data
-      Promise.all([
-        loadHelpers.loadServerConfig(guild, backup),
-        loadHelpers.loadRoles(guild, backup),
-        loadHelpers.loadChannels(guild, backup),
-        loadHelpers.loadAfk(guild, backup),
-        loadHelpers.loadEmojis(guild, backup),
-        loadHelpers.loadBans(guild, backup),
-        loadHelpers.loadWidget(guild, backup),
-      ]);
+  // clear guild
+  if (flushGuild) {
+    await flushGuildData(guild);
+    console.log("Guild data flushed.");
+  }
 
-      // return
-      return resolve(backup);
-    } catch (err) {
-      // error
-      reject(err);
-    }
-  });
+  try {
+    console.log("Loading server config...");
+    await loadHelpers.loadServerConfig(guild, backup);
+    console.log("Server config loaded successfully.");
+
+    console.log("Loading roles...");
+    await loadHelpers.loadRoles(guild, backup);
+    console.log("Roles loaded successfully.");
+
+    console.log("Loading channels...");
+    await loadHelpers.loadChannels(guild, backup);
+    console.log("Channels loaded successfully.");
+
+    console.log("Loading AFK data...");
+    await loadHelpers.loadAfk(guild, backup);
+    console.log("AFK data loaded successfully.");
+
+    console.log("Loading emojis...");
+    await loadHelpers.loadEmojis(guild, backup);
+    console.log("Emojis loaded successfully.");
+
+    console.log("Loading bans...");
+    await loadHelpers.loadBans(guild, backup);
+    console.log("Bans loaded successfully.");
+
+    console.log("Loading widget...");
+    await loadHelpers.loadWidget(guild, backup);
+    console.log("Widget loaded successfully.");
+
+    console.log("All promises resolved successfully.");
+
+    return backup;
+  } catch (error) {
+    console.error("One or more promises failed:");
+    console.error(error);
+    throw error;
+  }
 }

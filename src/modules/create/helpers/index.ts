@@ -75,6 +75,8 @@ export async function getRoles(guild: Guild): Promise<RoleData[]> {
 
   // adding guild roles to roles array
   guildRoles.forEach((role: Role) => {
+    if(!role.tags){
+      
     roles.push({
       name: role.name,
       color: role.hexColor,
@@ -83,7 +85,7 @@ export async function getRoles(guild: Guild): Promise<RoleData[]> {
       everyone: role.id == guild.id,
       mentionable: role.mentionable,
       permissions: role.permissions.bitfield.toString(),
-    });
+    });}
   });
 
   // return
@@ -132,19 +134,18 @@ export async function getChannels(guild: Guild): Promise<ChannelData> {
       categories: [],
       others: [],
     };
-
     // categories
     let categories = guild.channels.cache
       .filter((x) => x.type === ChannelType.GuildCategory)
       .sort((x: any, y: any) => x.position - y.position)
       .toJSON() as CategoryChannel[];
-
+   
     // adding categories to channels array
     for (let category of categories) {
       // base data
       var data: CategoryData = {
         name: category.name,
-        childeren: [],
+        children: [],
         permissions: getChannelPermissions(category),
       };
       // appends children of category
@@ -152,17 +153,18 @@ export async function getChannels(guild: Guild): Promise<ChannelData> {
         .sort((x, y) => x.position - y.position)
         .toJSON();
       for (let child of childrenOfCategory) {
+        
         // check wheter text or voice
         if (child.type === ChannelType.GuildText) {
           // text channel
           let textChannel = await fetchTextChannel(child);
           // push
-          data.childeren.push(textChannel);
+          data.children.push(textChannel);
         } else if (child.type === ChannelType.GuildVoice) {
           // voice channel
           let voiceChannel = await fetchVoiceChannel(child);
           // push
-          data.childeren.push(voiceChannel);
+          data.children.push(voiceChannel);
         } else {
           throw Error("Invalid Channel Type ~ TEST");
         }
@@ -170,6 +172,8 @@ export async function getChannels(guild: Guild): Promise<ChannelData> {
 
       // push
       channels.categories.push(data);
+      
+    }
 
       // appends other children
       let otherChannels = (
@@ -211,9 +215,8 @@ export async function getChannels(guild: Guild): Promise<ChannelData> {
           throw Error("Invalid Channel Type ~ TEST");
         }
       }
-
       // return
       resolve(channels);
-    }
+    
   });
 }
