@@ -8,7 +8,7 @@ import {
   GuildVerificationLevel,
 } from "discord.js";
 
-/** 
+/**
  * Flush Guild Data
  *
  * @description Clears the guild data
@@ -31,9 +31,7 @@ export async function flushGuildData(guild: Guild) {
   // clear bans
   let bans = await guild.bans.fetch();
   bans.forEach((ban) => {
-    guild.members
-      .unban(ban.user, "Flushing Server Data")
-      .catch(() => {});
+    guild.members.unban(ban.user, "Flushing Server Data").catch(() => {});
   });
   // clear webhooks
   let webhooks = await guild.fetchWebhooks();
@@ -49,33 +47,40 @@ export async function flushGuildData(guild: Guild) {
   guild.setBanner(null, "Flushing Server Data").catch(() => {});
   guild.setSplash(null, "Flushing Server Data").catch(() => {});
   // message notification
-  guild.setDefaultMessageNotifications(
-    GuildDefaultMessageNotifications.OnlyMentions,
-    "Flushing Server Data"
-  ).catch(() => {});
+  guild
+    .setDefaultMessageNotifications(
+      GuildDefaultMessageNotifications.OnlyMentions,
+      "Flushing Server Data"
+    )
+    .catch(() => {});
   // clear widget
-  guild.setWidgetSettings(
-    { enabled: false, channel: null },
-    "Flushing Server Data"
-  ).catch(() => {});
+  guild
+    .setWidgetSettings(
+      { enabled: false, channel: null },
+      "Flushing Server Data"
+    )
+    .catch(() => {});
   // system channel
   guild.setSystemChannel(null, "Flushing Server Data").catch(() => {});
-  guild.setSystemChannelFlags([
-    GuildSystemChannelFlags.SuppressGuildReminderNotifications,
-    GuildSystemChannelFlags.SuppressJoinNotifications,
-    GuildSystemChannelFlags.SuppressPremiumSubscriptions,
-  ]).catch(() => {});
+  guild
+    .setSystemChannelFlags([
+      GuildSystemChannelFlags.SuppressGuildReminderNotifications,
+      GuildSystemChannelFlags.SuppressJoinNotifications,
+      GuildSystemChannelFlags.SuppressPremiumSubscriptions,
+    ])
+    .catch(() => {});
   // clear filters
   if (!guild.features.includes(GuildFeature.Community)) {
     // clear explict filter
-    guild.setExplicitContentFilter(
-      GuildExplicitContentFilter.Disabled,
-      "Flushing Server Data"
-    ).catch(() => {});
+    guild
+      .setExplicitContentFilter(
+        GuildExplicitContentFilter.Disabled,
+        "Flushing Server Data"
+      )
+      .catch(() => {});
     // clear verification level
-    guild.setVerificationLevel(
-      GuildVerificationLevel.None,
-      "Flushing Server Data"
-    ).catch(() => {});
+    guild
+      .setVerificationLevel(GuildVerificationLevel.None, "Flushing Server Data")
+      .catch(() => {});
   }
 }

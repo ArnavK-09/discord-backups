@@ -79,7 +79,8 @@ export function fetchTextChannel(
             archived: thread.archived!,
             locked: thread.locked!,
             rateLimitPerUser: thread.rateLimitPerUser,
-            autoArchiveDuration: thread.autoArchiveDuration ?? ThreadAutoArchiveDuration.OneDay,
+            autoArchiveDuration:
+              thread.autoArchiveDuration ?? ThreadAutoArchiveDuration.OneDay,
             type: thread.type,
           };
 

@@ -75,17 +75,17 @@ export async function getRoles(guild: Guild): Promise<RoleData[]> {
 
   // adding guild roles to roles array
   guildRoles.forEach((role: Role) => {
-    if(!role.tags){
-      
-    roles.push({
-      name: role.name,
-      color: role.hexColor,
-      hoist: role.hoist,
-      position: role.position,
-      everyone: role.id == guild.id,
-      mentionable: role.mentionable,
-      permissions: role.permissions.bitfield.toString(),
-    });}
+    if (!role.tags) {
+      roles.push({
+        name: role.name,
+        color: role.hexColor,
+        hoist: role.hoist,
+        position: role.position,
+        everyone: role.id == guild.id,
+        mentionable: role.mentionable,
+        permissions: role.permissions.bitfield.toString(),
+      });
+    }
   });
 
   // return
@@ -139,7 +139,7 @@ export async function getChannels(guild: Guild): Promise<ChannelData> {
       .filter((x) => x.type === ChannelType.GuildCategory)
       .sort((x: any, y: any) => x.position - y.position)
       .toJSON() as CategoryChannel[];
-   
+
     // adding categories to channels array
     for (let category of categories) {
       // base data
@@ -153,7 +153,6 @@ export async function getChannels(guild: Guild): Promise<ChannelData> {
         .sort((x, y) => x.position - y.position)
         .toJSON();
       for (let child of childrenOfCategory) {
-        
         // check wheter text or voice
         if (child.type === ChannelType.GuildText) {
           // text channel
@@ -172,51 +171,49 @@ export async function getChannels(guild: Guild): Promise<ChannelData> {
 
       // push
       channels.categories.push(data);
-      
     }
 
-      // appends other children
-      let otherChannels = (
-        guild.channels.cache.filter((x) => {
-          return (
-            !x.parent &&
-            x.type !== ChannelType.GuildCategory &&
-            x.type !== ChannelType.PublicThread &&
-            x.type !== ChannelType.PrivateThread &&
-            x.type !== ChannelType.AnnouncementThread
-          );
-        }) as Collection<Snowflake, Exclude<GuildChannel, ThreadChannel>>
-      )
-        .sort((x, y) => x.position - y.position)
-        .toJSON();
+    // appends other children
+    let otherChannels = (
+      guild.channels.cache.filter((x) => {
+        return (
+          !x.parent &&
+          x.type !== ChannelType.GuildCategory &&
+          x.type !== ChannelType.PublicThread &&
+          x.type !== ChannelType.PrivateThread &&
+          x.type !== ChannelType.AnnouncementThread
+        );
+      }) as Collection<Snowflake, Exclude<GuildChannel, ThreadChannel>>
+    )
+      .sort((x, y) => x.position - y.position)
+      .toJSON();
 
-      // adding
-      for (let otherChannel of otherChannels) {
-        // check wheter text or voice
-        if (
-          otherChannel.type === ChannelType.GuildText ||
-          otherChannel.type === ChannelType.GuildAnnouncement ||
-          otherChannel.type === ChannelType.GuildForum
-        ) {
-          // text channel
-          let textChannel: TextChannelData = await fetchTextChannel(
-            otherChannel as TextChannel
-          );
-          // push
-          channels.others.push(textChannel);
-        } else if (otherChannel.type === ChannelType.GuildVoice) {
-          // voice channel
-          let voiceChannel: VoiceChannelData = await fetchVoiceChannel(
-            otherChannel as VoiceChannel
-          );
-          // push
-          channels.others.push(voiceChannel);
-        } else {
-          throw Error("Invalid Channel Type ~ TEST");
-        }
+    // adding
+    for (let otherChannel of otherChannels) {
+      // check wheter text or voice
+      if (
+        otherChannel.type === ChannelType.GuildText ||
+        otherChannel.type === ChannelType.GuildAnnouncement ||
+        otherChannel.type === ChannelType.GuildForum
+      ) {
+        // text channel
+        let textChannel: TextChannelData = await fetchTextChannel(
+          otherChannel as TextChannel
+        );
+        // push
+        channels.others.push(textChannel);
+      } else if (otherChannel.type === ChannelType.GuildVoice) {
+        // voice channel
+        let voiceChannel: VoiceChannelData = await fetchVoiceChannel(
+          otherChannel as VoiceChannel
+        );
+        // push
+        channels.others.push(voiceChannel);
+      } else {
+        throw Error("Invalid Channel Type ~ TEST");
       }
-      // return
-      resolve(channels);
-    
+    }
+    // return
+    resolve(channels);
   });
 }

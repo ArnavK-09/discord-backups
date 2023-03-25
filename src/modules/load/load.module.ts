@@ -28,7 +28,8 @@ export async function loadBackup(
 ): Promise<BackupData> {
   // if guild | backup not there
   if (!guild) throw new Error("Guild not found");
-  if (!backup || typeof backup === "undefined") throw new Error("Backup Data Not Provided");
+  if (!backup || typeof backup === "undefined")
+    throw new Error("Backup Data Not Provided");
 
   //console.log("Loading backup:", backup);
 

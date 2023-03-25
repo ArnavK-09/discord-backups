@@ -1,6 +1,3 @@
-
-
-
 /// imports
 import { Guild, SnowflakeUtil } from "discord.js";
 import type { BackupData } from "~/typings";
@@ -71,7 +68,7 @@ export function createBackup(guild: Guild, options: createBackupOptions = {}) {
       if (!options || !(options.exclude || []).includes("roles")) {
         backup.roles = await createHelpers.getRoles(guild);
       }
-     
+
       // channels
       if (!options || !(options.exclude || []).includes("channels")) {
         backup.channels = await createHelpers.getChannels(guild);

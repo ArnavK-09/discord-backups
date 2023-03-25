@@ -175,7 +175,7 @@ export function loadChannel(
 
         // return
         resolve(channel);
-        return channel
+        return channel;
       } else {
         // return
         resolve(channel);

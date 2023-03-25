@@ -180,7 +180,10 @@ export function loadWidget(guild: Guild, backup: BackupData): Promise<Guild[]> {
  * @param {BackupData} backup - Backup data
  * @returns {Promise<unknown[]>} unkown
  */
-export async function loadChannels(guild: Guild, backup: BackupData): Promise<unknown> {
+export async function loadChannels(
+  guild: Guild,
+  backup: BackupData
+): Promise<unknown> {
   const channelPromises: Promise<unknown>[] = [];
 
   // Load category channels
@@ -195,10 +198,8 @@ export async function loadChannels(guild: Guild, backup: BackupData): Promise<un
     channelPromises.push(loadChannel(channel, guild));
   }
   // Wait for all promises to resolve
- return Promise.all(channelPromises);
+  return Promise.all(channelPromises);
 }
-
-
 
 /**
  * Load Server Config
@@ -223,32 +224,31 @@ export async function loadServerConfig(
   };
 
   const configProps = [
-    { prop: 'name', method: 'setName' },
-    { prop: 'iconURL', method: 'setIcon' },
-    { prop: 'splashURL', method: 'setSplash' },
-    { prop: 'bannerURL', method: 'setBanner' },
-    { prop: 'verificationLevel', method: 'setVerificationLevel' },
-    { prop: 'explicitContentFilter', method: 'setExplicitContentFilter' },
+    { prop: "name", method: "setName" },
+    { prop: "iconURL", method: "setIcon" },
+    { prop: "splashURL", method: "setSplash" },
+    { prop: "bannerURL", method: "setBanner" },
+    { prop: "verificationLevel", method: "setVerificationLevel" },
+    { prop: "explicitContentFilter", method: "setExplicitContentFilter" },
   ];
 
   const serverConfigPromises = configProps
     // @ts-ignore
     .filter(({ prop }) => config[prop] !== undefined)
     .map(({ prop, method }) => {
-      if (prop === 'explicitContentFilter' && !guild.features.includes(GuildFeature.Community)) {
+      if (
+        prop === "explicitContentFilter" &&
+        !guild.features.includes(GuildFeature.Community)
+      ) {
         return Promise.resolve();
       }
       // @ts-ignore
-      return guild[method](config[prop]!, 'Loading Backup Config');
+      return guild[method](config[prop]!, "Loading Backup Config");
     });
 
   await Promise.allSettled(serverConfigPromises);
   //return results.filter(({ status }) => status === 'fulfilled').map(({ value }) => value as Guild);
 }
-
-
-
-
 
 /*
 export function loadServerConfig(
@@ -309,4 +309,4 @@ export function loadServerConfig(
   // loading promises
   return Promise.all(serverconfigPromises);
 }
-*/ 
+*/
