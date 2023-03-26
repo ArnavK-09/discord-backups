@@ -14,13 +14,13 @@ To use this package first you have to import it
 const { createBackup, loadBackup, bkupUtils } = require("@arnavk-09/discord-backups");
 ```
 
-### createBackup(guild, options)
+#### createBackup(guild, options)
 The createBackup function creates a backup of the specified Discord guild. It returns a promise that resolves with the backup data. You can then save this data to a file or database for later use.
 ```js
 const backup = await createBackup(guild);
 ```
 
-### loadBackup(guild, backupData, options)
+#### loadBackup(guild, backupData, options)
 The loadBackup function restores a guild from a backup. It takes the guild object and backup data as parameters and returns a promise that resolves when the guild has been fully restored.
 ```js
 await loadBackup(guild, backupData);
@@ -72,9 +72,9 @@ Contributions are welcome! Here are the steps to contribute:
 5. And commit them: `git commit -m 'Add some feature'`
 6. Push your changes to your forked repository: `git push origin my-new-feature`
 7. Submit a pull request from your forked repository to the main repository
-8. Wait for feedback and approval from the maintainers
+8. Wait for feedback and approval 
 
-Please make sure your code follows the project's code style and includes tests for any new features or bug fixes.
+Please make sure your code follows the project's code style.
 
 ## ⭐ Star
-If you find this package useful, please consider giving it a star on [GitHub](https://github.com/ArnavK-09/@arnavk-09/discord-backups). It helps to boost our motivation and spread the word about this project. Thank you! 
+If you find this package useful, please consider giving it a star on [GitHub](https://github.com/ArnavK-09/discord-backups). It helps to boost our motivation and spread the word about this project. Thank you! 
