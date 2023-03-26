@@ -1,4 +1,4 @@
-# 🧩 @arnavk-09/discord-backups
+# @arnavk-09/discord-backups
 `@arnavk-09/discord-backups` is an easy-to-use npm package for creating and loading backups of Discord servers. The package is built on top of the popular discord.js library and provides a streamlined interface for creating and restoring backups.
 > Custom version of @Androz2091/discord-backup
 
