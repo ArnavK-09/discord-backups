@@ -36,44 +36,19 @@ export async function loadBackup(
   // clear guild
   if (flushGuild) {
     await flushGuildData(guild);
-    console.log("Guild data flushed.");
   }
 
   try {
-    console.log("Loading server config...");
     await loadHelpers.loadServerConfig(guild, backup);
-    console.log("Server config loaded successfully.");
-
-    console.log("Loading roles...");
     await loadHelpers.loadRoles(guild, backup);
-    console.log("Roles loaded successfully.");
-
-    console.log("Loading channels...");
     await loadHelpers.loadChannels(guild, backup);
-    console.log("Channels loaded successfully.");
-
-    console.log("Loading AFK data...");
     await loadHelpers.loadAfk(guild, backup);
-    console.log("AFK data loaded successfully.");
-
-    console.log("Loading emojis...");
     await loadHelpers.loadEmojis(guild, backup);
-    console.log("Emojis loaded successfully.");
-
-    console.log("Loading bans...");
     await loadHelpers.loadBans(guild, backup);
-    console.log("Bans loaded successfully.");
-
-    console.log("Loading widget...");
     await loadHelpers.loadWidget(guild, backup);
-    console.log("Widget loaded successfully.");
-
-    console.log("All promises resolved successfully.");
 
     return backup;
   } catch (error) {
-    console.error("One or more promises failed:");
-    console.error(error);
     throw error;
   }
 }

@@ -14,11 +14,16 @@ import type {
 import type { BackupData } from "~/typings";
 import { loadCategory, loadChannel } from "~/utils";
 
-interface ServerConfig {
+/**
+ * LoadServerConfig
+ * @description Type Interface for load server config of a guild
+ */
+interface LoadServerConfig {
   name?: string;
   iconURL?: string;
   splashURL?: string;
   bannerURL?: string;
+  [key: string]: any;
   verificationLevel?: GuildVerificationLevel;
   explictContentFilter?: GuildExplicitContentFilter;
 }
@@ -214,7 +219,7 @@ export async function loadServerConfig(
   guild: Guild,
   backup: BackupData
 ): Promise<void> {
-  const config: ServerConfig = {
+  const config: LoadServerConfig = {
     name: backup.name,
     iconURL: backup.iconURL,
     splashURL: backup.splashURL,
@@ -233,7 +238,6 @@ export async function loadServerConfig(
   ];
 
   const serverConfigPromises = configProps
-    // @ts-ignore
     .filter(({ prop }) => config[prop] !== undefined)
     .map(({ prop, method }) => {
       if (
@@ -247,66 +251,4 @@ export async function loadServerConfig(
     });
 
   await Promise.allSettled(serverConfigPromises);
-  //return results.filter(({ status }) => status === 'fulfilled').map(({ value }) => value as Guild);
 }
-
-/*
-export function loadServerConfig(
-  guild: Guild,
-  backup: BackupData
-): Promise<Guild[]> {
-  // promises list
-  let serverconfigPromises: Promise<Guild>[] = [];
-
-  // loading config 
-  // name
-  if (backup.name) {
-    // push
-    serverconfigPromises.push(
-      guild.setName(backup.name, "Loading Backup Config")
-    );
-  }
-  // icon
-  if (backup.iconURL) {
-    // push
-    serverconfigPromises.push(
-      guild.setIcon(backup.iconURL, "Loading Backup Config")
-    );
-  }
-  // splash
-  if (backup.splashURL) {
-    // push
-    serverconfigPromises.push(
-      guild.setSplash(backup.splashURL, "Loading Backup Config")
-    );
-  }
-  // banner
-  if (backup.bannerURL) {
-    // push
-    serverconfigPromises.push(
-      guild.setBanner(backup.bannerURL, "Loading Backup Config")
-    );
-  }
-  // verification level
-  if (backup.verificationLevel) {
-    // push
-    serverconfigPromises.push(
-      guild.setVerificationLevel(
-        backup.verificationLevel,
-        "Loading Backup Config"
-      )
-    );
-  }
-  // explict filter
-  if (
-    backup.explictContentFilter &&
-    guild.features.includes(GuildFeature.Community)
-  ) {
-    serverconfigPromises.push(
-      guild.setExplicitContentFilter(backup.explictContentFilter)
-    );
-  }
-  // loading promises
-  return Promise.all(serverconfigPromises);
-}
-*/
