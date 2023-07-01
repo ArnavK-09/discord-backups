@@ -30,7 +30,7 @@ await loadBackup(guild, backupData);
 Here's an example of how to use discord-backups to create and load backups
 ```js
 const { Client, IntentsBitField } = require("discord.js");
-const { createBackup, loadBackup, bkupUtils } = require("discord-backups");
+const { createBackup, loadBackup, bkupUtils } = require("@arnavk-09/discord-backups");
 
 const TOKEN = "your-discord-bot-token-here";
 
