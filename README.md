@@ -68,7 +68,7 @@ Contributions are welcome! Here are the steps to contribute:
 1. Fork the repository
 2. Clone your forked repository to your local machine or use github codespace 
 3. Create a new branch for your changes: `git checkout -b my-new-feature`
-4. Make your changes & Format It `npx prettier -w src`
+4. Make your changes & Format It `npx prettier -w .`
 5. And commit them: `git commit -m 'Add some feature'`
 6. Push your changes to your forked repository: `git push origin my-new-feature`
 7. Submit a pull request from your forked repository to the main repository
